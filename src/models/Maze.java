@@ -1,15 +1,29 @@
-package model;
+package models;
 
 import utils.Color;
 
 import java.util.*;
 
+/**
+ * This class represents the Maze itself.
+ * It contains the nodes and connections to other nodes.
+ */
 public class Maze {
 
+    /**
+     * Stores all the Nodes and connections in a map
+     * You may also see it as an adjacency list.
+     */
     private Map<Node, Set<DirectedLine>> adjList;
 
-    public static int FINISH = -1;
+    /**
+     * The starting state.
+     * (The state contains where the Pawn's are).
+     */
     private State startState;
+
+    // Represents the finish number/id for a node.
+    private static int FINISH = -1;
 
     public Maze () {
         adjList = new LinkedHashMap<>();
@@ -20,19 +34,32 @@ public class Maze {
         return dfs(startState, new HashSet<>());
     }
 
+    /**
+     * Recursively searches depth-first. Also includes backtracking.
+     * This transverses through the maze. Looking at the color of the Node a pawn is on. And moves the other pawns accordinly.
+     * It stores the path it has taken, and if a path proves to be a dead-end it will go back to a previous state
+     *
+     * @param start Current state in wich it will transverse
+     * @param visited States it has visited
+     * @return An array with the solution or an empty array (no solution)
+     */
     private LinkedList<State> dfs(State start, Set<State> visited) {
         LinkedList<State> solution;
         visited.add(start);
 
-        if (isGoalState(start)) { /* Gevonden */
+        // The solution has been found
+        if (isGoalState(start)) {
             solution = new LinkedList<State>();
             solution.add(start);
             return solution;
         }
 
+        // The solution has not been found yet
         else {
+            // Get neighbours of the current state
             List<State> neighbours = getNeighbours(start);
 
+            // Try the neighbours and come to a solution
             for(State neighbour : neighbours) {
                 if (!visited.contains(neighbour)) {
                     solution = dfs(neighbour, visited);
@@ -44,46 +71,88 @@ public class Maze {
             }
         }
 
-        /* visited.remove(start); */
-        return new LinkedList<State>(); /* geen oplossing */
+        // No solution was found
+        // Return an empty list.
+        return new LinkedList<State>();
     }
 
+    /**
+     * Checks if the current state is in a FINISHED position
+     *
+     * @param state State to check
+     * @return true if a pawn is on the finish node. Otherwise false
+     */
     private boolean isGoalState(State state) {
         return state.getPawn1().getCurrentNode().getNumber() == FINISH || state.getPawn2().getCurrentNode().getNumber() == FINISH;
     }
 
+    /**
+     * Checks if the array contains a solution
+     *
+     * @param list List of states (path it has taken)
+     * @return true if a solution was found, otherwise false.
+     */
     private boolean goalIsReached(LinkedList<State> list) {
         return !list.isEmpty();
     }
 
+    /**
+     * Gets the possible states (neighbours) of a current state
+     * E.G. If Pawn1 is on green, it will return neigbours for Pawn2 which are connected by green lines.
+     * This gets stored in a list with possible states to explore.
+     *
+     * @param state Current state of the pawns
+     * @return A list of new possibilites to explore
+     */
     private LinkedList<State> getNeighbours(State state) {
+
+        // Init a new LinkedList
         LinkedList<State> neighbours = new LinkedList<>();
 
+        // The Pawns from the current state
         Pawn pawn1 = state.getPawn1();
         Pawn pawn2 = state.getPawn2();
 
+        // Gets all the lines (connections to other Nodes) for the pawns and store them in a Set.
         Set<DirectedLine> set1 = adjList.get(pawn1.getCurrentNode());
         Set<DirectedLine> set2 = adjList.get(pawn2.getCurrentNode());
 
+        // Loops through the lines for Pawn1
         set1.forEach(line -> {
-            if (line.getColor().equals(pawn2.getCurrentNode().getColor()))
-                neighbours.add(new State(new Pawn(line.getPointsTo()), pawn2));
+
+            // If the line color equals the color of the node Pawn2 is on
+            if (line.getColor().equals(pawn2.getCurrentNode().getColor())) {
+                // Create a new possible state
+                State new_state = new State(new Pawn(line.getPointsTo()), pawn2);
+
+                // Push it to the neighbours array
+                neighbours.add(new_state);
+            }
+
         });
 
+        // Loops through the lines for Pawn2
         set2.forEach(line -> {
-            if (line.getColor().equals(pawn1.getCurrentNode().getColor()))
-                neighbours.add(new State(pawn1, new Pawn(line.getPointsTo())));
+
+            // If the line color equals the color of the node Pawn1 is on
+            if (line.getColor().equals(pawn1.getCurrentNode().getColor())) {
+
+                // Create a new possible state
+                State new_state = new State(pawn1, new Pawn(line.getPointsTo()));
+
+                // Push it to the neighbours array
+                neighbours.add(new_state);
+            }
+
         });
 
-        System.out.println("NEIGHBOURS OF " + pawn1 + " AND " + pawn2);
-        for (State neighbour : neighbours)
-            System.out.println(neighbour.toString());
-
-        System.out.println("----------");
-
+        // Finally, return the new states
         return neighbours;
     }
 
+    /**
+     * Creates the Maze and sets a starting state
+     */
     private void createMaze() {
         Node node1 = addNode(1, Color.PINK);
         Node node2 = addNode(2, Color.BLACK);
@@ -192,22 +261,34 @@ public class Maze {
         this.startState = new State(new Pawn(node1), new Pawn(node2));
     }
 
+    /**
+     * Prints the Maze.
+     *  - All the nodes (+ colors)
+     *    - All the connected lines (+ colors)
+     */
     public void printMaze() {
+
+        // Loop through all nodes
         for (Map.Entry entry : adjList.entrySet()) {
             Node node = (Node) entry.getKey();
-            Set set = (Set) entry.getValue();
-
+            Set<DirectedLine> set = (Set<DirectedLine>) entry.getValue();
             final String[] lines = {""};
-            set.forEach(o -> {
-                DirectedLine line = (DirectedLine) o;
 
-                lines[0] += String.format("[%s, pointsTo: Node%d (%s)] ", line.getColor(), line.getPointsTo().getNumber(), line.getPointsTo().getColor());
-            });
+            // Loop through lines set and format the connections
+            set.forEach(line -> lines[0] += String.format("[%s, pointsTo: Node%d (%s)] ", line.getColor(), line.getPointsTo().getNumber(), line.getPointsTo().getColor()));
 
+            // Print the node
             System.out.printf("%d (%s) - Lines: %s\n", node.getNumber(), node.getColor().toString(), lines[0]);
         }
     }
 
+    /**
+     * Adds a Node to the adjacency list.
+     *
+     * @param number number/id of the Node
+     * @param color color of the node
+     * @return The created node
+     */
     private Node addNode(int number, Color color) {
         Node node = new Node(number, color);
         adjList.put(node, new HashSet<DirectedLine>());
@@ -215,9 +296,14 @@ public class Maze {
         return node;
     }
 
+    /**
+     * Adds a connection line to a node
+     *
+     * @param node The node to add the line to
+     * @param directedLine The line to be added
+     */
     private void addEdge(Node node, DirectedLine directedLine) {
         adjList.get(node).add(directedLine);
     }
-
 
 }

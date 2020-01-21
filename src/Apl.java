@@ -1,5 +1,5 @@
-import model.Maze;
-import model.State;
+import models.Maze;
+import models.State;
 
 import java.util.List;
 

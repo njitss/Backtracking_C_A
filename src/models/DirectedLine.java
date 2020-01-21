@@ -1,11 +1,20 @@
-package model;
+package models;
 
 import utils.Color;
 
+/**
+ * Represents a connection to another Node
+ */
 public class DirectedLine {
 
+    /**
+     * Color of the Line
+     */
     private Color color;
 
+    /**
+     * What node it points to
+     */
     private Node pointsTo;
 
     public DirectedLine(Color color, Node pointsTo) {

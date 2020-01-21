@@ -1,8 +1,19 @@
-package model;
+package models;
 
+/**
+ * Represents a State
+ * Stores the position of the pawns
+ */
 public class State {
 
+    /**
+     * Represents the first Pawn
+     */
     private Pawn pawn1;
+
+    /**
+     * Represents the second Pawn
+     */
     private Pawn pawn2;
 
     public State(Pawn pawn1, Pawn pawn2) {
@@ -16,14 +27,6 @@ public class State {
 
     public Pawn getPawn2() {
         return pawn2;
-    }
-
-    public void setPawn1(Pawn pawn1) {
-        this.pawn1 = pawn1;
-    }
-
-    public void setPawn2(Pawn pawn2) {
-        this.pawn2 = pawn2;
     }
 
     @Override
