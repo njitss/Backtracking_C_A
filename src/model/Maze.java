@@ -44,7 +44,7 @@ public class Maze {
             }
         }
 
-        /* bezocht.remove(start); */
+        /* visited.remove(start); */
         return new LinkedList<State>(); /* geen oplossing */
     }
 
@@ -139,6 +139,7 @@ public class Maze {
 
         // Node 9
         addEdge(node9, new DirectedLine(Color.GREEN, node4));
+        addEdge(node9, new DirectedLine(Color.BLACK, node14));
 
         // Node 10
         addEdge(node10, new DirectedLine(Color.GREEN, node15));
@@ -166,8 +167,9 @@ public class Maze {
         addEdge(node16, new DirectedLine(Color.GREEN, node15));
 
         // Node 17
-        addEdge(node17, new DirectedLine(Color.BLACK, node16));
         addEdge(node17, new DirectedLine(Color.BLACK, node11));
+        addEdge(node17, new DirectedLine(Color.PINK, node12));
+        addEdge(node17, new DirectedLine(Color.BLACK, node16));
 
         // Node 18
         addEdge(node18, new DirectedLine(Color.ORANGE, node9));

@@ -13,6 +13,7 @@ class Apl {
         Maze maze = new Maze();
         List<State> result = maze.run();
         System.out.println(result);
+        System.out.println(result.size());
 //        maze.printMaze();
     }
 
