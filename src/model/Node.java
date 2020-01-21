@@ -21,4 +21,11 @@ public class Node {
         return color;
     }
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "number=" + number +
+                ", color=" + color +
+                '}';
+    }
 }

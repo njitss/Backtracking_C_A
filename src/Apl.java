@@ -1,4 +1,7 @@
 import model.Maze;
+import model.State;
+
+import java.util.List;
 
 class Apl {
 
@@ -8,7 +11,9 @@ class Apl {
 
     private void run() {
         Maze maze = new Maze();
-        maze.printMaze();
+        List<State> result = maze.run();
+        System.out.println(result);
+//        maze.printMaze();
     }
 
 }

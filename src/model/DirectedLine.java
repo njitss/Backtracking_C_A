@@ -20,4 +20,12 @@ public class DirectedLine {
     public Node getPointsTo() {
         return pointsTo;
     }
+
+    @Override
+    public String toString() {
+        return "DirectedLine{" +
+                "color=" + color +
+                ", pointsTo=" + pointsTo +
+                '}';
+    }
 }
