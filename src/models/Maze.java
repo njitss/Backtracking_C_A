@@ -1,7 +1,16 @@
 package models;
 
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonException;
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
+import exceptions.MazeIsEmptyException;
 import utils.Color;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -27,10 +36,10 @@ public class Maze {
 
     public Maze () {
         adjList = new LinkedHashMap<>();
-        createMaze();
     }
 
     public List<State> run() {
+        this.init();
         return dfs(startState, new HashSet<>());
     }
 
@@ -153,110 +162,95 @@ public class Maze {
     /**
      * Creates the Maze and sets a starting state
      */
-    private void createMaze() {
-        Node node1 = addNode(1, Color.PINK);
-        Node node2 = addNode(2, Color.BLACK);
-        Node node3 =  addNode(3, Color.GREEN);
-        Node node4 = addNode(4, Color.GREEN);
-        Node node5 = addNode(5, Color.GREEN);
-        Node node6 = addNode(6, Color.ORANGE);
-        Node node7 = addNode(7, Color.ORANGE);
-        Node node8 = addNode(8, Color.PINK);
-        Node node9 = addNode(9, Color.PINK);
-        Node node10 = addNode(10, Color.BLACK);
-        Node node11 = addNode(11, Color.ORANGE);
-        Node node12 = addNode(12, Color.PINK);
-        Node node13 = addNode(13, Color.ORANGE);
-        Node node14 = addNode(14, Color.GREEN);
-        Node node15 = addNode(15, Color.ORANGE);
-        Node node16 = addNode(16, Color.GREEN);
-        Node node17 = addNode(17, Color.GREEN);
-        Node node18 = addNode(18, Color.BLACK);
-        Node node19 = addNode(19, Color.ORANGE);
-        Node node20 = addNode(20, Color.GREEN);
-        Node node21 = addNode(21, Color.BLACK);
-        Node node22 = addNode(22, Color.BLACK);
-        Node nodefinish = addNode(FINISH, Color.BLUE);
+    public void importMaze(String filename) throws MazeIsEmptyException {
+        // Open file maze.json
+        try (FileReader fileReader = new FileReader((new File("").getAbsolutePath() + "/src/" + filename))) {
 
-        // Node 1
-        addEdge(node1, new DirectedLine(Color.PINK, node4));
-        addEdge(node1, new DirectedLine(Color.BLACK, node5));
+            // Put contents into a JsonArray
+            JsonArray nodes_array = (JsonArray) Jsoner.deserialize(fileReader);
 
-        // Node 2
-        addEdge(node2, new DirectedLine(Color.GREEN, node6));
-        addEdge(node2, new DirectedLine(Color.PINK, node12));
+            // Loop through the JsonArray
+            for (Object json_object : nodes_array) {
 
-        // Node 3
-        addEdge(node3, new DirectedLine(Color.ORANGE, node1));
-        addEdge(node3, new DirectedLine(Color.ORANGE, node4));
+                // Cast to JsonObject
+                JsonObject node = (JsonObject) json_object;
 
-        // Node 4
-        addEdge(node4, new DirectedLine(Color.BLACK, node13));
+                // Get the Color of node
+                Color color = Color.valueOf((String) node.get("color"));
 
-        // Node 5
-        addEdge(node5, new DirectedLine(Color.ORANGE, node9));
+                // Get number/id of node
+                int number = ((BigDecimal) node.get("number")).intValue();
 
-        // Node 6
-        addEdge(node6, new DirectedLine(Color.GREEN, node9));
-        addEdge(node6, new DirectedLine(Color.PINK, node10));
+                // Add the node to the adjenency list.
+                adjList.put(new Node(number, color), new HashSet<DirectedLine>());
+            }
 
-        // Node 7
-        addEdge(node7, new DirectedLine(Color.GREEN, node2));
+            for (Object json_object : nodes_array) {
 
-        // Node 8
-        addEdge(node8, new DirectedLine(Color.PINK, node3));
+                // Cast to JsonObject
+                JsonObject node = (JsonObject) json_object;
 
-        // Node 9
-        addEdge(node9, new DirectedLine(Color.GREEN, node4));
-        addEdge(node9, new DirectedLine(Color.BLACK, node14));
+                // Get the Color of node
+                Color color = Color.valueOf((String) node.get("color"));
 
-        // Node 10
-        addEdge(node10, new DirectedLine(Color.GREEN, node15));
+                // Get number/id of node
+                int number = ((BigDecimal) node.get("number")).intValue();
 
-        // Node 11
-        addEdge(node11, new DirectedLine(Color.PINK, node10));
-        addEdge(node11, new DirectedLine(Color.GREEN, node12));
+                // Get the Lines from the JsonArray
+                JsonArray lines = (JsonArray) node.get("lines");
 
-        // Node 12
-        addEdge(node12, new DirectedLine(Color.GREEN, node7));
+                // Loop through the lines
+                for (Object json_line : lines) {
 
-        // Node 13
-        addEdge(node13, new DirectedLine(Color.GREEN, node8));
-        addEdge(node13, new DirectedLine(Color.GREEN, node18));
+                    // Cast to a JsonObject
+                    JsonObject line = (JsonObject) json_line;
 
-        // Node 14
-        addEdge(node14, new DirectedLine(Color.GREEN, nodefinish));
-        addEdge(node14, new DirectedLine(Color.ORANGE, node20));
+                    // Get color of the line
+                    Color color_line = Color.valueOf((String) line.get("color"));
 
-        // Node 15
-        addEdge(node15, new DirectedLine(Color.PINK, nodefinish));
-        addEdge(node15, new DirectedLine(Color.GREEN, node22));
+                    // Get the NUMBER of the node it points to.
+                    int pointsTo = ((BigDecimal) line.get("pointsTo")).intValue();
 
-        // Node 16
-        addEdge(node16, new DirectedLine(Color.GREEN, node15));
+                    // We have to find the node it should direct to.
+                    for (Node key : adjList.keySet()) {
 
-        // Node 17
-        addEdge(node17, new DirectedLine(Color.BLACK, node11));
-        addEdge(node17, new DirectedLine(Color.PINK, node12));
-        addEdge(node17, new DirectedLine(Color.BLACK, node16));
+                        // The node we are looking for
+                        if (key.getNumber() == pointsTo) {
+                            adjList.get(new Node(number, color)) // To find the node, we make an identical node and use it to search the list.
+                                    .add(new DirectedLine(color_line, key)); // When we found the node, we add the new directed line to it. The KEY is the Node we found.
+                        }
+                    }
 
-        // Node 18
-        addEdge(node18, new DirectedLine(Color.ORANGE, node9));
-        addEdge(node18, new DirectedLine(Color.ORANGE, node20));
+                }
+            }
 
-        // Node 19
-        addEdge(node19, new DirectedLine(Color.GREEN, node18));
+            if (adjList.size() == 0) throw new MazeIsEmptyException("The maze is empty.");
+        } catch (IOException | JsonException e) {
+            e.printStackTrace();
+        }
 
-        // Node 20
-        addEdge(node20, new DirectedLine(Color.ORANGE, node21));
-        addEdge(node20, new DirectedLine(Color.BLACK, node19));
+    }
 
-        // Node 21
-        addEdge(node21, new DirectedLine(Color.ORANGE, node22));
-        addEdge(node21, new DirectedLine(Color.BLACK, nodefinish));
+    private void init() {
+        int nr_node1 = 1;
+        int nr_node2 = 2;
 
-        // Node 22
-        addEdge(node22, new DirectedLine(Color.ORANGE, node17));
+        Node node1 = null;
+        Node node2 = null;
+
+        // We have to find the node it should direct to.
+        for (Node key : adjList.keySet()) {
+
+            // The node we are looking for
+            if (key.getNumber() == nr_node1)
+                node1 = key;
+
+            else if (key.getNumber() == nr_node2)
+                node2 = key;
+        }
+
+        assert node1 != null;
+        assert node2 != null;
 
         this.startState = new State(new Pawn(node1), new Pawn(node2));
     }

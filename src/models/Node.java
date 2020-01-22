@@ -2,6 +2,8 @@ package models;
 
 import utils.Color;
 
+import java.util.Objects;
+
 /**
  * This class represents a Node (as seen in picture example as a circle or triangle or square)
  */
@@ -28,6 +30,19 @@ public class Node {
 
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return number == node.number;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
     }
 
     @Override

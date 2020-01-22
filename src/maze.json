@@ -1,0 +1,283 @@
+[
+    {
+        "number": -1,
+        "color": "BLUE",
+        "lines": [ ]
+    },
+    {
+        "number": 1,
+        "color": "PINK",
+        "lines": [
+            {
+                "color": "PINK",
+                "pointsTo": 4
+            },
+            {
+                "color": "BLACK",
+                "pointsTo": 5
+            }
+        ]
+    },
+    {
+        "number": 2,
+        "color": "BLACK",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 6
+            },
+            {
+                "color": "PINK",
+                "pointsTo": 12
+            }
+        ]
+    },
+    {
+        "number": 3,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "ORANGE",
+                "pointsTo": 1
+            },
+            {
+                "color": "ORANGE",
+                "pointsTo": 4
+            }
+        ]
+    },
+    {
+        "number": 4,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "BLACK",
+                "pointsTo": 13
+            }
+        ]
+    },
+    {
+        "number": 5,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "ORANGE",
+                "pointsTo": 9
+            }
+        ]
+    },
+    {
+        "number": 6,
+        "color": "ORANGE",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 9
+            },
+            {
+                "color": "PINK",
+                "pointsTo": 10
+            }
+        ]
+    },
+    {
+        "number": 7,
+        "color": "ORANGE",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 2
+            }
+        ]
+    },
+    {
+        "number": 8,
+        "color": "PINK",
+        "lines": [
+            {
+                "color": "PINK",
+                "pointsTo": 3
+            }
+        ]
+    },
+    {
+        "number": 9,
+        "color": "PINK",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 4
+            },
+            {
+                "color": "BLACK",
+                "pointsTo": 14
+            }
+        ]
+    },
+    {
+        "number": 10,
+        "color": "BLACK",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 15
+            }
+        ]
+    },
+    {
+        "number": 11,
+        "color": "ORANGE",
+        "lines": [
+            {
+                "color": "PINK",
+                "pointsTo": 10
+            },
+            {
+                "color": "GREEN",
+                "pointsTo": 12
+            }
+        ]
+    },
+    {
+        "number": 12,
+        "color": "PINK",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 7
+            }
+        ]
+    },
+    {
+        "number": 13,
+        "color": "ORANGE",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 8
+            },
+            {
+                "color": "GREEN",
+                "pointsTo": 18
+            }
+        ]
+    },
+    {
+        "number": 14,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": -1
+            },
+            {
+                "color": "ORANGE",
+                "pointsTo": 20
+            }
+        ]
+    },
+    {
+        "number": 15,
+        "color": "ORANGE",
+        "lines": [
+            {
+                "color": "PINK",
+                "pointsTo": -1
+            },
+            {
+                "color": "GREEN",
+                "pointsTo": 22
+            }
+        ]
+    },
+    {
+        "number": 16,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 15
+            }
+        ]
+    },
+    {
+        "number": 17,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "BLACK",
+                "pointsTo": 11
+            },
+            {
+                "color": "PINK",
+                "pointsTo": 12
+            },
+            {
+                "color": "BLACK",
+                "pointsTo": 16
+            }
+        ]
+    },
+    {
+        "number": 18,
+        "color": "BLACK",
+        "lines": [
+            {
+                "color": "ORANGE",
+                "pointsTo": 9
+            },
+            {
+                "color": "ORANGE",
+                "pointsTo": 20
+            }
+        ]
+    },
+    {
+        "number": 19,
+        "color": "ORANGE",
+        "lines": [
+            {
+                "color": "GREEN",
+                "pointsTo": 18
+            }
+        ]
+    },
+    {
+        "number": 20,
+        "color": "GREEN",
+        "lines": [
+            {
+                "color": "ORANGE",
+                "pointsTo": 21
+            },
+            {
+                "color": "BLACK",
+                "pointsTo": 19
+            }
+        ]
+    },
+    {
+        "number": 21,
+        "color": "BLACK",
+        "lines": [
+            {
+                "color": "ORANGE",
+                "pointsTo": 22
+            },
+            {
+                "color": "BLACK",
+                "pointsTo": -1
+            }
+        ]
+    },
+    {
+        "number": 22,
+        "color": "BLACK",
+        "lines": [
+            {
+                "color": "ORANGE",
+                "pointsTo": 17
+            }
+        ]
+    }
+]

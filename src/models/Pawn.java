@@ -19,10 +19,6 @@ public class Pawn {
         return currentNode;
     }
 
-    public void setCurrentNode(Node currentNode) {
-        this.currentNode = currentNode;
-    }
-
     @Override
     public String toString() {
         return "Pawn{" +
