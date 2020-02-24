@@ -1,6 +1,6 @@
-package models;
+package main.models;
 
-import utils.Color;
+import main.utils.Color;
 
 /**
  * Represents a connection to another Node

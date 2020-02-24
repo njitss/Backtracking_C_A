@@ -1,11 +1,11 @@
-package models;
+package main.models;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
-import exceptions.MazeIsEmptyException;
-import utils.Color;
+import main.exceptions.MazeIsEmptyException;
+import main.utils.Color;
 
 import java.io.File;
 import java.io.FileReader;
@@ -23,7 +23,7 @@ public class Maze {
      * Stores all the Nodes and connections in a map
      * You may also see it as an adjacency list.
      */
-    private Map<Node, Set<DirectedLine>> adjList;
+    private Map<Node, Set<DirectedLine>> adjList = new LinkedHashMap<>();;
 
     /**
      * The starting state.
@@ -33,10 +33,6 @@ public class Maze {
 
     // Represents the finish number/id for a node.
     private static int FINISH = -1;
-
-    public Maze () {
-        adjList = new LinkedHashMap<>();
-    }
 
     public List<State> run() {
         this.init();

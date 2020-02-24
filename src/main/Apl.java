@@ -1,6 +1,8 @@
-import exceptions.MazeIsEmptyException;
-import models.Maze;
-import models.State;
+package main;
+
+import main.exceptions.MazeIsEmptyException;
+import main.models.Maze;
+import main.models.State;
 import java.util.*;
 
 class Apl {
@@ -15,7 +17,7 @@ class Apl {
         Maze maze = new Maze();
 
         try {
-            maze.importMaze("empty_maze.json");
+            maze.importMaze("main/maze.json");
 
             // Run and store the result.
             List<State> result = maze.run();

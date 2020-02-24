@@ -1,4 +1,4 @@
-package models;
+package main.models;
 
 /**
  * This class represents a Pawn.
