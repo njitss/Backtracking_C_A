@@ -17,7 +17,7 @@ class Apl {
         Maze maze = new Maze();
 
         try {
-            maze.importMaze("main/maze.json");
+            maze.importMaze("maze.json");
 
             // Run and store the result.
             List<State> result = maze.run();

@@ -1,5 +1,7 @@
 package main.models;
 
+import java.util.Objects;
+
 /**
  * Represents a State
  * Stores the position of the pawns
@@ -27,6 +29,20 @@ public class State {
 
     public Pawn getPawn2() {
         return pawn2;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof State)) return false;
+        State other = (State) obj;
+
+        return  this.pawn1.equals(other.pawn1) && this.pawn2.equals(other.pawn2) ||
+                this.pawn1.equals(other.pawn2) && this.pawn2.equals(other.pawn1);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pawn1, pawn2);
     }
 
     @Override

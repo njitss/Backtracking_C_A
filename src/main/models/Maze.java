@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -160,10 +162,10 @@ public class Maze {
      */
     public void importMaze(String filename) throws MazeIsEmptyException {
         // Open file maze.json
-        try (FileReader fileReader = new FileReader((new File("").getAbsolutePath() + "/src/" + filename))) {
-
+        try {
+            String result = new String(Files.readAllBytes( Paths.get("src", "main", filename)));
             // Put contents into a JsonArray
-            JsonArray nodes_array = (JsonArray) Jsoner.deserialize(fileReader);
+            JsonArray nodes_array = (JsonArray) Jsoner.deserialize(result);
 
             // Loop through the JsonArray
             for (Object json_object : nodes_array) {
@@ -224,7 +226,6 @@ public class Maze {
         } catch (IOException | JsonException e) {
             e.printStackTrace();
         }
-
     }
 
     private void init() {
