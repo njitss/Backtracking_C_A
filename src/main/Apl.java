@@ -24,8 +24,6 @@ class Apl {
             // Run
             maze.run(true);
 
-            maze.printResult();
-
         } catch (MazeIsEmptyException e) {
             e.printStackTrace();
         }

@@ -12,6 +12,9 @@ import java.util.List;
 
 public class MazeTests {
 
+    /**
+     * Stores the Maze for these tests
+     */
     private Maze maze;
 
     @BeforeEach
@@ -24,6 +27,13 @@ public class MazeTests {
         maze = null;
     }
 
+    /**
+     * Tests if the Maze from the assignment results in 37 steps as that would be the correct solution
+     *
+     * @maze maze.json
+     *
+     * @throws MazeIsEmptyException
+     */
     @Test
     public void totalStepsShouldBe37() throws MazeIsEmptyException {
         maze.importMaze("maze.json");
@@ -35,6 +45,11 @@ public class MazeTests {
         Assertions.assertEquals(37, result.size());
     }
 
+    /**
+     * Tests if the maze throws an empty exception when reading in an empty JSON array
+     *
+     * @maze empty_maze.json
+     */
     @Test()
     public void emptyMazeShouldThrowException() {
         Assertions.assertThrows(MazeIsEmptyException.class, () ->
@@ -42,6 +57,13 @@ public class MazeTests {
         );
     }
 
+    /**
+     * Tests if the maze traverses with a really simple 3 point maze.
+     *
+     * @maze simple_maze.json
+     *
+     * @throws MazeIsEmptyException Exception when maze is empty
+     */
     @Test
     public void simpleMazeShouldTraverse() throws MazeIsEmptyException {
         maze.importMaze("simple_maze.json");

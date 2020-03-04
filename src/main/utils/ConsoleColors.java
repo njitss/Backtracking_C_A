@@ -1,5 +1,8 @@
 package main.utils;
 
+/**
+ * Contains all available colors to use in System.out.printx
+ */
 public class ConsoleColors {
     // Reset
     public static final String RESET = "\033[0m";  // Text Reset

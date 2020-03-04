@@ -56,8 +56,8 @@ public class Maze {
         this.result = dfs(startState, new HashSet<>());
 
         if (this.result.size() > 0) {
-            System.out.printf("%sFound a solution! Total steps: %d\n", ConsoleColors.GREEN_BOLD, this.result.size());
             this.printResult();
+            System.out.printf("\n%sFound a solution! Total steps: %d\n", ConsoleColors.GREEN_BOLD_BRIGHT, this.result.size());
         }
         else System.out.printf("%sCould not find a solution\n", ConsoleColors.RED_BOLD);
 
