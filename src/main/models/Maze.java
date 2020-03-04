@@ -4,11 +4,11 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
+import main.exceptions.MazeHasNoSolutionException;
 import main.exceptions.MazeIsEmptyException;
 import main.utils.Color;
+import main.utils.ConsoleColors;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -33,7 +33,14 @@ public class Maze {
      */
     private State startState;
 
-    // Represents the finish number/id for a node.
+    /**
+     * Stores the result for later use
+     */
+    private List<State> result;
+
+    /**
+     * Represents the finish number/id for a node.
+     */
     private static int FINISH = -1;
 
     /**
@@ -43,7 +50,18 @@ public class Maze {
      */
     public List<State> run() {
         this.init();
-        return dfs(startState, new HashSet<>());
+
+        System.out.printf("%sFinding a solution... %s\n", ConsoleColors.GREEN_BRIGHT, ConsoleColors.RESET);
+
+        this.result = dfs(startState, new HashSet<>());
+
+        if (this.result.size() > 0) {
+            System.out.printf("%sFound a solution! Total steps: %d\n", ConsoleColors.GREEN_BOLD, this.result.size());
+            this.printResult();
+        }
+        else System.out.printf("%sCould not find a solution\n", ConsoleColors.RED_BOLD);
+
+        return result;
     }
 
     /**
@@ -177,6 +195,8 @@ public class Maze {
      * Creates the Maze and sets a starting state
      */
     public void importMaze(String filename) throws MazeIsEmptyException {
+        System.out.printf("%sImporting maze: %s...%s\n", ConsoleColors.RED, Paths.get("src", "main", filename), ConsoleColors.RESET);
+
         // Open file maze.json
         try {
             String result = new String(Files.readAllBytes( Paths.get("src", "main", filename)));
@@ -238,18 +258,24 @@ public class Maze {
                 }
             }
 
-            if (adjList.size() == 0) throw new MazeIsEmptyException("The maze is empty.");
+            if (adjList.size() == 0) {
+                MazeIsEmptyException e = new MazeIsEmptyException("The maze is empty.");
+                printError(e);
+                throw e;
+            }
         } catch (IOException | JsonException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Initializes the maze by
+     */
     private void init() {
         int nr_node1 = 1;
         int nr_node2 = 2;
 
-        Node node1 = null;
-        Node node2 = null;
+        Node node1 = null, node2 = null;
 
         // We have to find the node it should direct to.
         for (Node key : adjList.keySet()) {
@@ -262,9 +288,6 @@ public class Maze {
                 node2 = key;
         }
 
-        assert node1 != null;
-        assert node2 != null;
-
         this.startState = new State(new Pawn(node1), new Pawn(node2));
     }
 
@@ -276,41 +299,83 @@ public class Maze {
     public void printMaze() {
 
         // Loop through all nodes
-        for (Map.Entry entry : adjList.entrySet()) {
-            Node node = (Node) entry.getKey();
-            Set<DirectedLine> set = (Set<DirectedLine>) entry.getValue();
+        for (Map.Entry<Node, Set<DirectedLine>> entry : adjList.entrySet()) {
+            Node node = entry.getKey();
+            Set<DirectedLine> set = entry.getValue();
             final String[] lines = {""};
 
             // Loop through lines set and format the connections
-            set.forEach(line -> lines[0] += String.format("[%s, pointsTo: Node%d (%s)] ", line.getColor(), line.getPointsTo().getNumber(), line.getPointsTo().getColor()));
+            set.forEach(line ->
+                lines[0] +=
+                String.format("[%s, pointsTo: Node%d (%s)] ",
+                    line.getColor(),
+                    line.getPointsTo().getNumber(),
+                    line.getPointsTo().getColor()
+                )
+            );
 
             // Print the node
-            System.out.printf("%d (%s) - Lines: %s\n", node.getNumber(), node.getColor().toString(), lines[0]);
+            System.out.printf("%s%d (%s) %s- Lines: %s%s%s\n",
+                ConsoleColors.PURPLE_BOLD,
+                node.getNumber(),
+                node.getColor().toString(),
+                ConsoleColors.YELLOW_BOLD,
+                ConsoleColors.BLACK_BACKGROUND_BRIGHT,
+                lines[0],
+                ConsoleColors.RESET
+            );
         }
     }
 
     /**
-     * Adds a Node to the adjacency list.
-     *
-     * @param number number/id of the Node
-     * @param color color of the node
-     * @return The created node
+     * Prints a step by step instruction on how the Maze was solved
      */
-    private Node addNode(int number, Color color) {
-        Node node = new Node(number, color);
-        adjList.put(node, new HashSet<DirectedLine>());
+    public void printResult() {
+        try {
+            if (result.size() == 0) throw new MazeHasNoSolutionException();
 
-        return node;
+            System.out.printf("%s-=[ Maze Results ]=-%s\n", ConsoleColors.YELLOW_BOLD_BRIGHT, ConsoleColors.RESET);
+
+            for (int i = 0; i < result.size(); i++) {
+
+                State state = result.get(i);
+                Pawn p1 = state.getPawn1();
+                Pawn p2 = state.getPawn2();
+
+                // Print Step and pawns
+                System.out.printf("\n%sStep %d%s\n", ConsoleColors.CYAN_BOLD_BRIGHT, i+1, ConsoleColors.RESET);
+                this.printPawn(1, p1);
+                this.printPawn(2, p2);
+
+            }
+        } catch (MazeHasNoSolutionException e) {
+            printError(e);
+        }
     }
 
     /**
-     * Adds a connection line to a node
-     *
-     * @param node The node to add the line to
-     * @param directedLine The line to be added
+     * Used by printResult()
+     * Prints a Pawn.
+     * @param nr number of the pawn
+     * @param pawn Pawn instance
      */
-    private void addEdge(Node node, DirectedLine directedLine) {
-        adjList.get(node).add(directedLine);
+    private void printPawn(int nr, Pawn pawn) {
+        String node_nr = (pawn.getCurrentNode().getNumber() == -1) ? ConsoleColors.YELLOW_BOLD_BRIGHT + "FINISH" + ConsoleColors.WHITE : Integer.toString(pawn.getCurrentNode().getNumber());
+        System.out.printf("%sPawn %d:\t%s %s, %s\n",
+            ConsoleColors.GREEN_BOLD_BRIGHT,
+            nr,
+            ConsoleColors.WHITE,
+            node_nr,
+            pawn.getCurrentNode().getColor().toString()
+        );
+    }
+
+    /**
+     * Prints an error/execption
+     * @param e Exception instance
+     */
+    private void printError(Exception e) {
+        System.out.printf("%sERROR: %s%s\n", ConsoleColors.RED_BRIGHT, e.getMessage(), ConsoleColors.RESET);
     }
 
 }

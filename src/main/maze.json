@@ -224,11 +224,11 @@
         "lines": [
             {
                 "color": "ORANGE",
-                "pointsTo": 9
+                "pointsTo": 20
             },
             {
                 "color": "ORANGE",
-                "pointsTo": 20
+                "pointsTo": 9
             }
         ]
     },

@@ -18,14 +18,14 @@ class Apl {
         Maze maze = new Maze();
 
         try {
+
             maze.importMaze(MAZE_FILE_NAME);
 
-            System.out.printf("Running maze: %s\n", MAZE_FILE_NAME);
+            // Run
+            maze.run(true);
 
-            // Run and store the result.
-            List<State> result = maze.run(true);
+            maze.printResult();
 
-            System.out.printf("Ran the algorithm in: %d steps.\n", result.size());
         } catch (MazeIsEmptyException e) {
             e.printStackTrace();
         }

@@ -29,7 +29,8 @@ public class MazeTests {
         maze.importMaze("maze.json");
 
         // Run and store the result.
-        List<State> result = maze.run();
+        List<State> result = maze.run(true);
+        maze.printResult();
 
         Assertions.assertEquals(37, result.size());
     }
