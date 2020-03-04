@@ -36,9 +36,25 @@ public class Maze {
     // Represents the finish number/id for a node.
     private static int FINISH = -1;
 
+    /**
+     * Starts the depth first traversal and returns the solution if there is one
+     *
+     * @return Solution if found
+     */
     public List<State> run() {
         this.init();
         return dfs(startState, new HashSet<>());
+    }
+
+    /**
+     * Starts the depth first traversal and returns the solution if there is one
+     *
+     * @param print_maze    Prints maze if true
+     * @return              Solution if found
+     */
+    public List<State> run(boolean print_maze) {
+        if (print_maze) this.printMaze();
+        return this.run();
     }
 
     /**
