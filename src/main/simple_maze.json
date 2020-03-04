@@ -1,0 +1,22 @@
+[
+  {
+    "number": -1,
+    "color": "BLUE",
+    "lines": []
+  },
+  {
+    "number": 1,
+    "color": "PINK",
+    "lines": [
+      {
+        "color": "ORANGE",
+        "pointsTo": -1
+      }
+    ]
+  },
+  {
+    "number": 2,
+    "color": "ORANGE",
+    "lines": []
+  }
+]
