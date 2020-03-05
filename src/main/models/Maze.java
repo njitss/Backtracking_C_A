@@ -301,6 +301,7 @@ public class Maze {
         // Loop through all nodes
         for (Map.Entry<Node, Set<DirectedLine>> entry : adjList.entrySet()) {
             Node node = entry.getKey();
+            String node_nr = (node.getNumber() == FINISH) ? "FINISH" : Integer.toString(node.getNumber());
             Set<DirectedLine> set = entry.getValue();
             final String[] lines = {""};
 
@@ -314,15 +315,20 @@ public class Maze {
                 )
             );
 
-            // Print the node
-            System.out.printf("%s%d (%s) %s- Lines: %s%s%s\n",
-                ConsoleColors.PURPLE_BOLD,
-                node.getNumber(),
-                node.getColor().toString(),
-                ConsoleColors.YELLOW_BOLD,
+            // If the node has lines, display them. Otherwise leave blank
+            String node_lines = (!lines[0].equals("")) ? String.format("- Lines: %s%s%s",
                 ConsoleColors.BLACK_BACKGROUND_BRIGHT,
                 lines[0],
                 ConsoleColors.RESET
+            ) : "";
+
+            // Print the node
+            System.out.printf("%s%s (%s) %s%s\n",
+                ConsoleColors.PURPLE_BOLD,
+                node_nr,
+                node.getColor().toString(),
+                ConsoleColors.YELLOW_BOLD,
+                node_lines
             );
         }
     }
