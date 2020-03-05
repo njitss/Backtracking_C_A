@@ -6,7 +6,7 @@ import main.models.Maze;
 
 class Apl {
 
-    public static final String MAZE_FILE_NAME = "impossible_maze.json";
+    public static final String MAZE_FILE_NAME = "maze.json";
 
     public static void main(String[] args) {
         new Apl().run();
