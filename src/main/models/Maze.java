@@ -25,7 +25,7 @@ public class Maze {
      * Stores all the Nodes and connections in a map
      * You may also see it as an adjacency list.
      */
-    private Map<Node, Set<DirectedLine>> adjList = new LinkedHashMap<>();;
+    private Map<Node, Set<DirectedLine>> adjList = new LinkedHashMap<>();
 
     /**
      * The starting state.
@@ -90,7 +90,7 @@ public class Maze {
 
         // The solution has been found
         if (isGoalState(start)) {
-            solution = new LinkedList<State>();
+            solution = new LinkedList<>();
             solution.add(start);
             return solution;
         }
@@ -114,7 +114,7 @@ public class Maze {
 
         // No solution was found
         // Return an empty list.
-        return new LinkedList<State>();
+        return new LinkedList<>();
     }
 
     /**
@@ -216,7 +216,7 @@ public class Maze {
                 int number = ((BigDecimal) node.get("number")).intValue();
 
                 // Add the node to the adjenency list.
-                adjList.put(new Node(number, color), new HashSet<DirectedLine>());
+                adjList.put(new Node(number, color), new HashSet<>());
             }
 
             for (Object json_object : nodes_array) {
