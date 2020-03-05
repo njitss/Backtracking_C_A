@@ -48,7 +48,7 @@ public class Maze {
      *
      * @return Solution if found
      */
-    public List<State> run() {
+    public List<State> run() throws MazeHasNoSolutionException {
         this.init();
 
         System.out.printf("%sFinding a solution... %s\n", ConsoleColors.GREEN_BRIGHT, ConsoleColors.RESET);
@@ -59,7 +59,10 @@ public class Maze {
             this.printResult();
             System.out.printf("\n%sFound a solution! Total steps: %d\n", ConsoleColors.GREEN_BOLD_BRIGHT, this.result.size());
         }
-        else System.out.printf("%sCould not find a solution\n", ConsoleColors.RED_BOLD);
+        else {
+            printError("Could not find a solution");
+            throw new MazeHasNoSolutionException();
+        }
 
         return result;
     }
@@ -70,7 +73,7 @@ public class Maze {
      * @param print_maze    Prints maze if true
      * @return              Solution if found
      */
-    public List<State> run(boolean print_maze) {
+    public List<State> run(boolean print_maze) throws MazeHasNoSolutionException {
         if (print_maze) this.printMaze();
         return this.run();
     }
@@ -260,7 +263,7 @@ public class Maze {
 
             if (adjList.size() == 0) {
                 MazeIsEmptyException e = new MazeIsEmptyException("The maze is empty.");
-                printError(e);
+                printError(e.getMessage());
                 throw e;
             }
         } catch (IOException | JsonException e) {
@@ -355,7 +358,7 @@ public class Maze {
 
             }
         } catch (MazeHasNoSolutionException e) {
-            printError(e);
+            printError(e.getMessage());
         }
     }
 
@@ -378,10 +381,9 @@ public class Maze {
 
     /**
      * Prints an error/execption
-     * @param e Exception instance
      */
-    private void printError(Exception e) {
-        System.out.printf("%sERROR: %s%s\n", ConsoleColors.RED_BRIGHT, e.getMessage(), ConsoleColors.RESET);
+    private void printError(String s) {
+        System.out.printf("%sERROR: %s%s\n", ConsoleColors.RED_BRIGHT, s, ConsoleColors.RESET);
     }
 
 }

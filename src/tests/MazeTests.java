@@ -1,5 +1,6 @@
 package tests;
 
+import main.exceptions.MazeHasNoSolutionException;
 import main.exceptions.MazeIsEmptyException;
 import main.models.Maze;
 import main.models.State;
@@ -35,7 +36,7 @@ public class MazeTests {
      * @throws MazeIsEmptyException Exception when maze is empty
      */
     @Test
-    public void totalStepsShouldBe37() throws MazeIsEmptyException {
+    public void totalStepsShouldBe37() throws MazeIsEmptyException, MazeHasNoSolutionException {
         maze.importMaze("maze.json");
 
         // Run and store the result.
@@ -50,11 +51,24 @@ public class MazeTests {
      *
      * @maze empty_maze.json
      */
-    @Test()
+    @Test
     public void emptyMazeShouldThrowException() {
         Assertions.assertThrows(MazeIsEmptyException.class, () ->
             maze.importMaze("empty_maze.json")
         );
+    }
+
+    /**
+     * Tests if the maze throws an exception when it doesn't find a solution
+     *
+     * @maze impossible_maze.json
+     */
+    @Test
+    public void mazeWithNoSolutionShouldThrowException() {
+        Assertions.assertThrows(MazeHasNoSolutionException.class, () -> {
+            maze.importMaze("impossible_maze.json");
+            maze.run();
+        });
     }
 
     /**
@@ -65,7 +79,7 @@ public class MazeTests {
      * @throws MazeIsEmptyException Exception when maze is empty
      */
     @Test
-    public void simpleMazeShouldTraverse() throws MazeIsEmptyException {
+    public void simpleMazeShouldTraverse() throws MazeIsEmptyException, MazeHasNoSolutionException {
         maze.importMaze("simple_maze.json");
 
         // Run and store the result.
