@@ -32,7 +32,7 @@ public class MazeTests {
      *
      * @maze maze.json
      *
-     * @throws MazeIsEmptyException
+     * @throws MazeIsEmptyException Exception when maze is empty
      */
     @Test
     public void totalStepsShouldBe37() throws MazeIsEmptyException {

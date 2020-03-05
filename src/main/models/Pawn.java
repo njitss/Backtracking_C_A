@@ -11,7 +11,7 @@ public class Pawn {
     /**
      * The current node the Pawn is on.
      */
-    private Node currentNode;
+    private final Node currentNode;
 
     public Pawn(Node currentNode) {
         this.currentNode = currentNode;

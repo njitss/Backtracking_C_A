@@ -10,12 +10,12 @@ public class DirectedLine {
     /**
      * Color of the Line
      */
-    private Color color;
+    private final Color color;
 
     /**
      * What node it points to
      */
-    private Node pointsTo;
+    private final Node pointsTo;
 
     public DirectedLine(Color color, Node pointsTo) {
         this.color = color;

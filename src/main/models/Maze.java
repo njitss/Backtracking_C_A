@@ -25,7 +25,7 @@ public class Maze {
      * Stores all the Nodes and connections in a map
      * You may also see it as an adjacency list.
      */
-    private Map<Node, Set<DirectedLine>> adjList = new LinkedHashMap<>();
+    private final Map<Node, Set<DirectedLine>> adjList = new LinkedHashMap<>();
 
     /**
      * The starting state.
@@ -41,7 +41,7 @@ public class Maze {
     /**
      * Represents the finish number/id for a node.
      */
-    private static int FINISH = -1;
+    private static final int FINISH = -1;
 
     /**
      * Starts the depth first traversal and returns the solution if there is one

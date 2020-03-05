@@ -2,8 +2,6 @@ package main;
 
 import main.exceptions.MazeIsEmptyException;
 import main.models.Maze;
-import main.models.State;
-import java.util.*;
 
 class Apl {
 

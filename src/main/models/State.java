@@ -11,12 +11,12 @@ public class State {
     /**
      * Represents the first Pawn
      */
-    private Pawn pawn1;
+    private final Pawn pawn1;
 
     /**
      * Represents the second Pawn
      */
-    private Pawn pawn2;
+    private final Pawn pawn2;
 
     public State(Pawn pawn1, Pawn pawn2) {
         this.pawn1 = pawn1;

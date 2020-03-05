@@ -12,12 +12,12 @@ public class Node {
     /**
      * Number/ID of the Node
      */
-    private int number;
+    private final int number;
 
     /**
      * Color of the node
      */
-    private Color color;
+    private final Color color;
 
     public Node(int number, Color color) {
         this.number = number;
